@@ -6,7 +6,9 @@
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <title>Art Galery</title>
 
-    <link rel="stylesheet" href="./css/style.css"
+    <link rel="stylesheet" href="./css/style.css"/>
+        
+    
 </head>
 <body>
     <div class="background_menu">
@@ -33,7 +35,14 @@
         </div>
     </div>
 
-    <script src="js/three.js"></script>
-    <script src="js/main.js"></script>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three/build/three.module.js"
+            }
+        }
+    </script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
