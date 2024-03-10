@@ -26,11 +26,19 @@ document.body.appendChild( renderer.domElement );
 //controls
 document.addEventListener( 'keydown', onKeyDown, false );
 
+//texture
+const floortexture = new THREE.TextureLoader().load('image/Floor.jpg');
+floortexture.wrapS = THREE.RepeatWrapping;
+floortexture.wrapT = THREE.RepeatWrapping
+floortexture.repeat.set(4, 4);
+
 //create the floor
 const planegeometry = new THREE.PlaneGeometry( 50, 50);
-const planematerial = new THREE.MeshBasicMaterial({ color: 'green', side: THREE.DoubleSide});
+const planematerial = new THREE.MeshBasicMaterial({ map: floortexture, side: THREE.DoubleSide});
 const plane = new THREE.Mesh( planegeometry, planematerial);
 scene.add( plane );
+
+
 
 // animation
 
