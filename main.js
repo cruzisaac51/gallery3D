@@ -1,5 +1,6 @@
 
 import * as THREE from 'three';
+import {PointerLockControls} from '../examples/jsm/controls/PointerLockControls.js';
 console.log("three object", THREE)
 
 const width = window.innerWidth, height = window.innerHeight;
@@ -115,12 +116,77 @@ scene.add(ceiling);
 
 
 wallGroup.add( frontWall, rightWall,leftWall );
+
+//bounding box
+
+
 //loop through each wall an create the bounding box
 for (let i = 0; i < wallGroup.children.length; i++) {
 	wallGroup.children[i].BBox = new THREE.Box3();
 	wallGroup.children[i].BBox.setFromObject(wallGroup.children[i]);
 }
 
+
+// Create paitings
+function createPaiting(imageURL, width, height, position) {
+	const TextureLoader = new THREE.TextureLoader();
+	const paintingTexture = TextureLoader.load(imageURL);
+	const paitingMaterial = new THREE.MeshBasicMaterial({
+		map: paintingTexture,
+		side: THREE.DoubleSide
+	});
+	const paitingGeometry = new THREE.PlaneGeometry(width, height);
+	const paiting = new THREE.Mesh(paitingGeometry, paitingMaterial);
+	paiting.position.set(position.x, position.y, position.z);
+	return paiting;
+}
+
+const paiting1 = createPaiting(
+	'./image/1.jpg',
+	2.5,
+	4,
+	new THREE.Vector3(3,0,-14.99)
+)
+
+const paiting2 = createPaiting(
+	'./image/8.jpg',
+	2.5,
+	4,
+	new THREE.Vector3(-3,0,-14.99)
+)
+const paiting3 = createPaiting(
+	'./image/3.jpg',
+	5,
+	4,
+	new THREE.Vector3(-6.45,0,-10.99)
+)
+paiting3.rotation.y = Math.PI / 2;
+
+const paiting4 = createPaiting(
+	'./image/5.jpg',
+	5,
+	4,
+	new THREE.Vector3(-6.45,0,-2.99)
+)
+paiting4.rotation.y = Math.PI / 2;
+
+const paiting5 = createPaiting(
+	'./image/7.jpg',
+	5,
+	4,
+	new THREE.Vector3(6.45,0,-10.99)
+)
+paiting5.rotation.y = Math.PI / 2;
+
+const paiting6 = createPaiting(
+	'./image/4.jpg',
+	5,
+	4,
+	new THREE.Vector3(6.45,0,-2.99)
+)
+paiting6.rotation.y = Math.PI / 2;
+
+scene.add(paiting1, paiting2, paiting3, paiting4, paiting5, paiting6);
 // animation
 
 function animation( time ) {
@@ -132,25 +198,52 @@ function animation( time ) {
 
 }
 
+
+// menu
+const playButton = document.getElementById('play_button');
+playButton.addEventListener('click', startExperience);
+
 //movement
+const controls = new PointerLockControls(camera, document.body);
+//lock the pointer
+function startExperience(){
+	//lock the pointer
+	controls.lock();
+
+	// Hide menu
+	hidemenu();
+}
+
+
+
+function hidemenu(){
+	const menu = document.getElementById('menu');
+	menu.style.display= 'none';
+}
+function showmenu(){
+	const menu = document.getElementById('menu');
+	menu.style.display = 'block';
+}
+
+controls.addEventListener('unlock', showmenu);
 
 function onKeyDown(event) {
 	let keycode = event.which;
 	// right arrow
-	if ( keycode === 39) {
-		camera.translateX(0.05)
+	if ( keycode === 39  || keycode === 68) {
+		controls.moveRight(0.08);
 	}
 	// left arrow
-	else if ( keycode === 37){
-		camera.translateX(-0.05)
+	else if ( keycode === 37 || keycode === 65){
+		controls.moveRight(-0.08);
 	}
 	//up arrow
-	else if ( keycode === 38) {
-		camera.translateZ(-0.05)
+	else if ( keycode === 38 || keycode === 87) {
+		controls.moveForward(0.08);
 	}
 	//down arrow
-	else if ( keycode === 40) {
-		camera.translateZ(0.05)
+	else if ( keycode === 40 || keycode === 83) {
+		controls.moveForward(-0.08);
 	}
 
 }
