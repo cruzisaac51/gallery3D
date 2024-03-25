@@ -1,6 +1,6 @@
 
 import * as THREE from 'three';
-import {PointerLockControls} from '../examples/jsm/controls/PointerLockControls.js';
+import {PointerLockControls} from './examples/jsm/controls/PointerLockControls.js';
 console.log("three object", THREE)
 
 const width = window.innerWidth, height = window.innerHeight;
