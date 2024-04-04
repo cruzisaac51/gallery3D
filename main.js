@@ -1,6 +1,9 @@
 
 import * as THREE from 'three';
 import {PointerLockControls} from './examples/jsm/controls/PointerLockControls.js';
+import { loadStatueModel } from "./js/challengerstatue.js";
+import { TextGeometry } from "./examples/jsm/geometries/TextGeometry.js";
+import { FontLoader } from './examples/jsm/loaders/FontLoader.js';
 console.log("three object", THREE)
 
 const width = window.innerWidth, height = window.innerHeight;
@@ -12,10 +15,12 @@ camera.position.z = 10;
 
 const scene = new THREE.Scene();
 
-const geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
+const geometry = new THREE.BoxGeometry( 0.3, 0.3, 0.3 );
 const material = new THREE.MeshNormalMaterial();
 
 const mesh = new THREE.Mesh( geometry, material );
+mesh.position.y = Math.PI / 3;
+mesh.position.z = -6
 scene.add( mesh );
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -117,14 +122,59 @@ scene.add(ceiling);
 
 wallGroup.add( frontWall, rightWall,leftWall );
 
+//challenger
+loadStatueModel(scene);
+
+//logo challenger
+// const loader = new FontLoader();
+
+// loader.load( './examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+// 	const geometrylleters = new TextGeometry( 'Challenger', {
+// 		font: font,
+// 		size: 180,
+// 		depth: 5,
+// 		curveSegments: 12,
+// 		bevelEnabled: true,
+// 		bevelThickness: 10,
+// 		bevelSize: 8,
+// 		bevelOffset: 0,
+// 		bevelSegments: 5,
+		
+// 	} );
+	
+// } );
+
+// scene.add(loader);
+
 //bounding box
+function checkCollision(){
+	const playerBoundingBox = new THREE.Box3();
+	const cameraWolrdPosition = new THREE.Vector3();
 
+	camera.getWorldPosition(cameraWolrdPosition);
 
-//loop through each wall an create the bounding box
-for (let i = 0; i < wallGroup.children.length; i++) {
-	wallGroup.children[i].BBox = new THREE.Box3();
-	wallGroup.children[i].BBox.setFromObject(wallGroup.children[i]);
+	playerBoundingBox.setFromCenterAndSize(
+		cameraWolrdPosition, 
+		new THREE.Vector3(1,1,1)
+	);
+
+	//loop through each wall an create the bounding box
+	for (let i = 0; i < wallGroup.children.length; i++) {
+		const wall = wallGroup.children[i];
+		if (playerBoundingBox.intersectsBox(wall.BoundingBox)) {
+			return true;
+		}
+
+		// wallGroup.children[i].BBox = new THREE.Box3();
+		// wallGroup.children[i].BBox.setFromObject(wallGroup.children[i]);
+	}
+
+	return false;
 }
+
+
+
 
 
 // Create paitings
@@ -214,6 +264,14 @@ function startExperience(){
 	hidemenu();
 }
 
+document.getElementById("toggle-info").addEventListener("click", () => {
+	document.getElementById("info-panel").classList.toggle("collapsed");
+	document.getElementById("toggle-info").innerText = document
+	  .getElementById("info-panel")
+	  .classList.contains("collapsed")
+	  ? "Show"
+	  : "Hide";
+});
 
 
 function hidemenu(){
@@ -246,4 +304,8 @@ function onKeyDown(event) {
 		controls.moveForward(-0.08);
 	}
 
+	//check collision
+	else if (checkCollision()){
+		controls.lock();
+	}
 }
