@@ -2,8 +2,8 @@
 import * as THREE from 'three';
 import {PointerLockControls} from './examples/jsm/controls/PointerLockControls.js';
 import { loadStatueModel } from "./js/challengerstatue.js";
-import { TextGeometry } from "./examples/jsm/geometries/TextGeometry.js";
-import { FontLoader } from './examples/jsm/loaders/FontLoader.js';
+//import { TextGeometry } from "./examples/jsm/geometries/TextGeometry.js";
+//import { FontLoader } from './examples/jsm/loaders/FontLoader.js';
 console.log("three object", THREE)
 
 const width = window.innerWidth, height = window.innerHeight;

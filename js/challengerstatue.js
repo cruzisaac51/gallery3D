@@ -1,5 +1,5 @@
 // statue.js
-import * as THREE from "three";
+import * as THREE from "../build/three.module.js";
 import { GLTFLoader } from "../examples/jsm/loaders/GLTFLoader.js";
 console.log("something here? yesss")
 
