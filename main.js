@@ -11,7 +11,7 @@ const width = window.innerWidth, height = window.innerHeight;
 // init
 
 const camera = new THREE.PerspectiveCamera( 90, width / height, 0.01, 1000 );
-camera.position.z = 10;
+camera.position.z = 5.8;
 
 const scene = new THREE.Scene();
 
